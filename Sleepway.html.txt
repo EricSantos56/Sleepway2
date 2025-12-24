@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SleepWay • Monitor de Sono</title>
+
+<style>
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+background:linear-gradient(180deg,#0b1026,#1c2145);
+color:#fff;
+}
+header{
+padding:18px;
+text-align:center;
+font-size:22px;
+font-weight:800;
+}
+.card{
+background:rgba(255,255,255,.08);
+border-radius:18px;
+padding:16px;
+margin:12px;
+}
+.score{
+font-size:56px;
+font-weight:900;
+color:#7cf3c3;
+}
+.label{font-size:13px;opacity:.7;}
+.row{display:flex;justify-content:space-between;}
+.bar{
+height:10px;
+background:#2b2f5a;
+border-radius:10px;
+overflow:hidden;
+margin-top:6px;
+}
+.bar div{
+height:100%;
+background:linear-gradient(90deg,#7cf3c3,#6ab7ff);
+width:0%;
+transition:1s;
+}
+button{
+width:calc(100% - 24px);
+margin:12px;
+padding:15px;
+border-radius:16px;
+border:none;
+font-size:16px;
+font-weight:800;
+background:linear-gradient(90deg,#6ab7ff,#7cf3c3);
+}
+.share{
+background:linear-gradient(90deg,#ff7ab6,#ffd86a);
+color:#000;
+}
+.streak{
+font-size:18px;
+font-weight:700;
+color:#ffd86a;
+}
+footer{text-align:center;font-size:12px;opacity:.6;padding:20px;}
+</style>
+</head>
+
+<body>
+
+<header>🌙 SleepWay</header>
+
+<div class="card">
+<div class="row">
+<div>
+<div class="label">Qualidade do Sono</div>
+<div id="score" class="score">--</div>
+</div>
+<div>
+<div class="label">Tempo Dormido</div>
+<div id="time" style="font-size:20px;font-weight:700;">--</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="label">Sono Profundo</div>
+<div class="bar"><div id="deep"></div></div>
+
+<div class="label" style="margin-top:10px;">Sono Leve</div>
+<div class="bar"><div id="light"></div></div>
+
+<div class="label" style="margin-top:10px;">REM</div>
+<div class="bar"><div id="rem"></div></div>
+</div>
+
+<div class="card">
+<div class="label">🔥 Sequência</div>
+<div id="streak" class="streak">0 noites seguidas</div>
+</div>
+
+<button onclick="start()">Iniciar Monitoramento</button>
+<button onclick="report()">Gerar Relatório</button>
+<button class="share" onclick="share()">Compartilhar Score</button>
+
+<div class="card" id="report" style="display:none;"></div>
+
+<footer>SleepWay • Protótipo Viral v1</footer>
+
+<script>
+let streak = localStorage.getItem("streak") || 0;
+document.getElementById("streak").innerText = streak + " noites seguidas";
+
+function r(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+function start(){
+let score=r(70,96);
+document.getElementById("score").innerText=score;
+document.getElementById("time").innerText=r(6,8)+"h "+r(0,59)+"m";
+deep.style.width=r(25,40)+"%";
+light.style.width=r(35,55)+"%";
+rem.style.width=r(15,30)+"%";
+streak++;
+localStorage.setItem("streak",streak);
+document.getElementById("streak").innerText=streak+" noites seguidas";
+reportBox.style.display="none";
+}
+
+function report(){
+reportBox.style.display="block";
+reportBox.innerHTML=`
+<h3>📊 Relatório</h3>
+<p>Seu sono foi <b>acima da média</b>.</p>
+<ul>
+<li>✔ Boa regularidade</li>
+<li>✔ Sono profundo suficiente</li>
+<li>⚠ Evite telas antes de dormir</li>
+</ul>
+<p><b>Dica viral:</b> dormir no mesmo horário por 7 dias aumenta seu score.</p>`;
+}
+
+function share(){
+alert("🚀 Poste esse score nos stories e marque #SleepWay");
+}
+
+const reportBox=document.getElementById("report");
+</script>
+
+</body>
+</html>
